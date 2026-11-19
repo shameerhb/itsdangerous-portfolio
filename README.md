@@ -1,50 +1,58 @@
-<div align="center"><img src="https://raw.githubusercontent.com/pallets/itsdangerous/refs/heads/stable/docs/_static/itsdangerous-name.svg" alt="" height="150"></div>
+﻿# itsdangerous: Secret Key Rotation Test Enhancement
 
-# ItsDangerous
+## Project Overview
 
-... so better sign this
+An independent test-coverage enhancement to the itsdangerous Python library.
 
-Various helpers to pass data to untrusted environments and to get it
-back safe and sound. Data is cryptographically signed to ensure that a
-token has not been tampered with.
+This project focuses on understanding and testing secret-key rotation.
 
-It's possible to customize how data is serialized. Data is compressed as
-needed. A timestamp can be added and verified automatically while
-loading a token.
+## Technical Investigation
 
+The Signer class supports multiple secret keys.
 
-## A Simple Example
+- The newest key signs new values.
+- Older keys verify previously issued signatures.
+- Verification checks configured keys in reverse order.
 
-Here's how you could generate a token for transmitting a user's id and
-name between web requests.
+## Test Enhancement
 
-```python
-from itsdangerous import URLSafeSerializer
-auth_s = URLSafeSerializer("secret key", "auth")
-token = auth_s.dumps({"id": 5, "name": "itsdangerous"})
+File modified: tests/test_itsdangerous/test_signer.py
 
-print(token)
-# eyJpZCI6NSwibmFtZSI6Iml0c2Rhbmdlcm91cyJ9.6YP6T0BaO67XP--9UzTrmurXSmg
+Extended the existing test_secret_keys test to verify:
 
-data = auth_s.loads(token)
-print(data["name"])
-# itsdangerous
-```
+1. Old tokens remain valid when the old key is retained.
+2. New tokens are signed using the newest key.
+3. The old key alone cannot verify a newly signed token.
 
+## Validation Results
 
-## Donate
+- Targeted test: 1 passed
+- Full test suite: 297 passed
+- Code coverage: 97%
+- Python version: 3.13.17
 
-The Pallets organization develops and supports ItsDangerous and other
-popular packages. In order to grow the community of contributors and
-users, and allow the maintainers to devote more time to the projects,
-[please donate today][].
+## Technologies
 
-[please donate today]: https://palletsprojects.com/donate
+- Python
+- pytest
+- pytest-cov
+- Git
+- GitHub
 
-## Contributing
+## Running the Tests
 
-See our [detailed contributing documentation][contrib] for many ways to
-contribute, including reporting issues, requesting features, asking or answering
-questions, and making PRs.
+Run these commands individually in your terminal:
 
-[contrib]: https://palletsprojects.com/contributing/
+python -m pytest
+
+python -m pytest --cov=itsdangerous --cov-report=term-missing
+
+## Scope
+
+This is an independent portfolio exercise based on an existing open-source project. The library implementation was not modified. The work focuses on improving test coverage for secret-key rotation behaviour.
+
+## Author
+
+Shameer H B
+
+GitHub: https://github.com/shameerhb
