@@ -97,9 +97,15 @@ class TestSigner:
         assert isinstance(signed, bytes)
 
         signer = Signer(["a", "b"])
+
         assert signer.validate(signed)
-        out = signer.unsign(signed)
-        assert out == b"my string"
+        assert signer.unsign(signed) == b"my string"
+
+        new_signed = signer.sign("new string")
+        assert Signer("b").unsign(new_signed) == b"new string"
+
+        with pytest.raises(BadSignature):
+            Signer("a").unsign(new_signed)
 
 
 def test_abstract_algorithm():
