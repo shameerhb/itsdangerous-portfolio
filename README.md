@@ -56,3 +56,24 @@ This is an independent portfolio exercise based on an existing open-source proje
 Shameer H B
 
 GitHub: https://github.com/shameerhb
+
+## Docker Setup
+
+### Build the Docker image
+
+docker build -t itsdangerous-portfolio .
+
+### Run the test suite
+
+docker run --rm itsdangerous-portfolio
+
+### Run tests with coverage
+
+docker run --rm itsdangerous-portfolio uv run --with pytest-cov pytest --cov=itsdangerous --cov-report=term-missing
+
+### Verified Results
+
+- Python: 3.13.18
+- Tests passed: 297
+- Code coverage: 97%
+- Tests executed inside Docker.
