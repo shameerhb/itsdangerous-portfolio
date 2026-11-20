@@ -5,6 +5,7 @@ name: Lock inactive closed issues
 # on old issues.
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
 permissions:
@@ -19,7 +20,6 @@ jobs:
     steps:
       - uses: dessant/lock-threads@89ae32b08ed1a541efecbab17912962a5e38981c # v6.0.2
         with:
-          github-token: ${{ github.token }}
           issue-inactive-days: 14
           pr-inactive-days: 14
           discussion-inactive-days: 14
